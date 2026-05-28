@@ -35,6 +35,22 @@ class GerenciadorTarefas:
             status = "X" if tarefa.concluida else " "
             print(f"[{status}] {i}. {tarefa.titulo}")
 
+    def concluir(self, indice):
+        if 0 <= indice < len(self.tarefas):
+            self.tarefas[indice].concluida = True
+            self.salvar()
+            print("✔ Tarefa concluída!")
+        else:
+            print("[!] Número inválido.")
+
+    def remover(self, indice):
+        if 0 <= indice < len(self.tarefas):
+            del self.tarefas[indice]
+            self.salvar()
+            print("✔ Tarefa removida!")
+        else:
+            print("[!] Número inválido.")
+
     def salvar(self):
         dados = [t.to_dict() for t in self.tarefas]
         with open(self.arquivo, "w") as f:
@@ -56,7 +72,9 @@ gerenciador = GerenciadorTarefas()
 while True:
     print("\n1-Adicionar")
     print("2-Listar")
-    print("3-Sair")
+    print("3-Concluir")
+    print("4-Remover")
+    print("5-Sair")
     
     opcao = input("Escolha: ")
 
@@ -68,6 +86,22 @@ while True:
         gerenciador.listar()
     
     elif opcao == "3":
+        gerenciador.listar()
+        try:
+            indice = int(input("Número da tarefa: "))-1
+            gerenciador.concluir(indice)
+        except ValueError:
+            print("[!] Digite apenas números.")
+    
+    elif opcao == "4":
+        gerenciador.listar()
+        try:
+            indice = int(input("Número da tarefa: "))-1
+            gerenciador.remover(indice)
+        except ValueError:
+            print("[!] Digite apenas números.")
+
+    elif opcao == "5":
         print("Saindo...")
         break
     
